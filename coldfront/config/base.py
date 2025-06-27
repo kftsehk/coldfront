@@ -66,6 +66,8 @@ INSTALLED_APPS += [
     "django_q",
     "simple_history",
     "fontawesome_free",
+    "tailwind",
+    "theme",
 ]
 
 if DEBUG and importlib.util.find_spec("sslserver") is not None:
@@ -154,6 +156,7 @@ STATIC_URL = "/static/"
 STATIC_ROOT = ENV.str("STATIC_ROOT", default=PROJECT_ROOT("static_root"))
 STATICFILES_DIRS = [
     PROJECT_ROOT("coldfront/static"),
+    PROJECT_ROOT("theme/static/css/dist"),
 ]
 
 # Add local site static files if set
@@ -167,3 +170,21 @@ if len(SITE_STATIC) > 0:
 # Add system site static files
 if os.path.isdir("/usr/share/coldfront/site/static"):
     STATICFILES_DIRS.insert(0, "/usr/share/coldfront/site/static")
+
+# ------------------------------------------------------------------------------
+# Tailwind CSS settings
+# ------------------------------------------------------------------------------
+TAILWIND_APP_NAME = "theme"
+
+# Enable reload for development
+# if DEBUG:
+#     INSTALLED_APPS += ["django_browser_reload"]
+#     MIDDLEWARE += ["django_browser_reload.middleware.BrowserReloadMiddleware"]
+
+# NPM executable path (will be auto-detected if not specified)
+# TAILWIND_CLI_PATH = ENV.str("TAILWIND_CLI_PATH", default="")
+
+# Internal IPs for development hot reload
+INTERNAL_IPS = [
+    "127.0.0.1",
+]
