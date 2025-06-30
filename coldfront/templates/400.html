@@ -8,10 +8,14 @@ ColdFront - Bad Request
 
 
 {% block content %}
-<div class="row justify-content-center">
-    <div class="col-lg-6 col-xs-12">
-        <div class="alert alert-danger" role="alert">
-          <i class="fas fa-user-lock" aria-hidden="true"></i> Oops! Invalid request
+<div class="flex justify-center items-center min-h-[60vh]">
+    <div class="w-full max-w-lg mx-auto px-4">
+        <div class="bg-red-50 border border-red-200 rounded-lg p-6 text-center" role="alert">
+          <div class="flex items-center justify-center w-12 h-12 mx-auto mb-4 bg-red-100 rounded-full">
+            <i class="fas fa-exclamation-triangle text-red-600 text-xl" aria-hidden="true"></i>
+          </div>
+          <h2 class="text-xl font-semibold text-red-800 mb-2">Bad Request</h2>
+          <p class="text-red-700">Oops! Your request could not be processed. Please check your input and try again.</p>
         </div>
     </div>
 </div>

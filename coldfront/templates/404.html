@@ -8,10 +8,14 @@ ColdFront - Not found
 
 
 {% block content %}
-<div class="row justify-content-center">
-    <div class="col-lg-6 col-xs-12">
-        <div class="alert alert-warning" role="alert">
-          <i class="far fa-question-circle" aria-hidden="true"></i> The resource you're looking for is not found.
+<div class="flex justify-center items-center min-h-[60vh]">
+    <div class="w-full max-w-lg mx-auto px-4">
+        <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-6 text-center" role="alert">
+          <div class="flex items-center justify-center w-12 h-12 mx-auto mb-4 bg-yellow-100 rounded-full">
+            <i class="far fa-question-circle text-yellow-600 text-xl" aria-hidden="true"></i>
+          </div>
+          <h2 class="text-xl font-semibold text-yellow-800 mb-2">Page Not Found</h2>
+          <p class="text-yellow-700">The resource you're looking for could not be found. It may have been moved or deleted.</p>
         </div>
     </div>
 </div>
