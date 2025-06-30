@@ -34,11 +34,11 @@
   --color-secondary-700: #b8872a;
   --color-secondary-800: #9c6d1d;
   --color-secondary-900: #805310;
-  --color-secondary-950: #A68137;
+  --color-secondary-950: #a68137;
 
   /* Legacy aliases for backward compatibility */
   --color-primary: #003974;
-  --color-secondary: #A68137;
+  --color-secondary: #a68137;
   --color-hkust-blue: #003974;
-  --color-hkust-gold: #A68137;
+  --color-hkust-gold: #a68137;
 }
