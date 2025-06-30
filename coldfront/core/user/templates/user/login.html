@@ -31,7 +31,7 @@ Log In
           </div>
           <div class="ml-3">
             <p class="text-sm text-red-800">
-              {% autoescape off %} {% settings_value 'LOGIN_FAIL_MESSAGE' %} {% endautoescape %}
+              {{ settings_value 'LOGIN_FAIL_MESSAGE' }}
             </p>
           </div>
         </div>
