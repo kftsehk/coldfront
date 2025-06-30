@@ -2,35 +2,49 @@
 {% load static %}
 <!-- Start System Monitor -->
 
-<div class="col">
-  <h3 class="text-center">{{system_monitor_panel_title}}</h3>
-  <hr> {% if last_updated %}
-  <div class="row">
+<div class="w-full">
+  <h3 class="text-center text-xl font-semibold text-gray-900 mb-4">{{system_monitor_panel_title}}</h3>
+  <div class="border-t border-gray-200 mb-6"></div>
+  {% if last_updated %}
+  <div class="mb-4">
     {% if SYSTEM_MONITOR_DISPLAY_XDMOD_LINK %}
-    <a target="_blank" href="{{SYSTEM_MONITOR_DISPLAY_XDMOD_LINK}}"><img style="max-width: 100px" src="{% static 'coldfront/plugins/system_monitor/images/xdmod.png' %}" alt=""> <i class="fa fa-external-link" aria-hidden="true"></i></a> {% endif %}
+    <a target="_blank" href="{{SYSTEM_MONITOR_DISPLAY_XDMOD_LINK}}" class="inline-flex items-center text-primary-600 hover:text-primary-800 transition-colors duration-200">
+      <img style="max-width: 100px" src="{% static 'coldfront/plugins/system_monitor/images/xdmod.png' %}" alt="XDMod logo" class="mr-2"> 
+      <i class="fa fa-external-link" aria-hidden="true"></i>
+    </a> 
+    {% endif %}
   </div>
-  <div class="row">
-    <div class="col-lg-6">
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+    <div class="bg-white p-4 rounded-lg border border-gray-200">
       <div id="chartUtilization" style="min-height: 270px;width: 100%;"></div>
     </div>
-    <div class="col-lg-6">
+    <div class="bg-white p-4 rounded-lg border border-gray-200">
       <div id="chartJobs" style="min-height: 270px;width: 100%;"></div>
     </div>
   </div>
-  <div class="row">
+  <div class="flex justify-between items-end">
     {% if SYSTEM_MONITOR_DISPLAY_MORE_STATUS_INFO_LINK %}
-    <div class="col">
-      {% if SYSTEM_MONITOR_DISPLAY_MORE_STATUS_INFO_LINK %}
-      <a target="_blank" href="{{SYSTEM_MONITOR_DISPLAY_MORE_STATUS_INFO_LINK}}">More status info <i class="fa fa-external-link" aria-hidden="true"></i></a>
-      <br> {% endif %}
+    <div>
+      <a target="_blank" href="{{SYSTEM_MONITOR_DISPLAY_MORE_STATUS_INFO_LINK}}" class="text-primary-600 hover:text-primary-800 transition-colors duration-200">
+        More status info <i class="fa fa-external-link" aria-hidden="true"></i>
+      </a>
     </div>
     {% endif %}
-    <div class="flex-nowrap align-self-end">
+    <div class="text-sm text-gray-500">
       Last Updated: {{last_updated}}
     </div>
   </div>
   {% else %}
-  <div class="col alert alert-danger" role="alert"><i class="fa fa-info-circle"></i> Error getting system information.</div>
+  <div class="bg-red-50 border border-red-200 rounded-lg p-4" role="alert">
+    <div class="flex">
+      <div class="flex-shrink-0">
+        <i class="fa fa-info-circle text-red-400" aria-hidden="true"></i>
+      </div>
+      <div class="ml-3">
+        <p class="text-sm text-red-800">Error getting system information.</p>
+      </div>
+    </div>
+  </div>
   {% endif %}
 </div>
 
