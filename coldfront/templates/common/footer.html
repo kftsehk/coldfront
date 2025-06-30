@@ -1,10 +1,14 @@
 {% load portal_tags %}
 
-
-<footer id="footer" class="footer bg-primary customize_footer">
-  <div class="container">
-    <div class="row justify-content-center">
-      <p>Powered by ColdFront Version {% get_version %} | <a href="https://github.com/ubccr/coldfront"><i class="fab fa-github" aria-hidden="true"></i> GitHub</a></p>
+<footer id="footer" class="absolute bottom-0 w-full mt-auto bg-primary-600 text-white">
+  <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8 pt-4">
+    <div class="flex justify-center">
+      <p class="text-sm text-primary-100">
+        Powered by ColdFront Version {% get_version %} | 
+        <a href="https://github.com/ubccr/coldfront" class="text-white hover:text-primary-200 transition-colors duration-200">
+          <i class="fab fa-github mr-1" aria-hidden="true"></i> GitHub
+        </a>
+      </p>
     </div>
   </div>
 </footer>

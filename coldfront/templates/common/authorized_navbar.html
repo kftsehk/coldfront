@@ -1,53 +1,260 @@
-{% include 'common/navbar_brand.html' %}
 {% load common_tags %}
+{% load static %}
 
-<nav class="navbar navbar-expand-md navbar-dark bg-primary">
-  <div class="container">
-    <a class="navbar-brand d-block d-sm-none text-primary" href="#">ColdFront</a>
-
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-main">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-
-    <div class="navbar-collapse collapse" id="navbar-main">
-      <ul class="navbar-nav">
-        <li id="navbar-home" class="nav-item active">
-          <a class="nav-link" href="/">Home</a>
-        </li>
-        <li id="navbar-center-summary" class="nav-item">
-          <a class="nav-link" href="{% url 'center-summary' %}">Center Summary</a>
-        </li>
-        <li id="navbar-project-menu" class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">Project</a>
-          <div class="dropdown-menu">
-            <a id="navbar-project" class="dropdown-item" href="{% url 'project-list' %}">Projects</a>
-            <a id="navbar-allocation" class="dropdown-item" href="{% url 'allocation-list' %}">Allocations</a>
-            <a id="navbar-resource" class="dropdown-item" href="{% url 'resource-list' %}">Resources</a>
-            {% if settings.ALLOCATION_ACCOUNT_ENABLED  %}
-              <a class="dropdown-item" href="{% url 'allocation-account-list' %}">Allocation Accounts</a>
-            {% endif %}
-            {% if request.user.userprofile.is_pi  %}
-              <a id="navbar-user-allocation" class="dropdown-item" href="{% url 'user-list-allocations' %}">User Allocations</a>
-            {% endif %}
+<nav class="bg-white border-b border-gray-100">
+  <div class="mx-auto max-w-7xl px-4">
+    <div class="flex h-12 justify-between items-center">
+      <!-- Left side: Logo and Brand -->
+      <div class="flex items-center space-x-8">
+        <div class="flex items-center space-x-4">
+          <div class="flex-shrink-0">
+            <a href="/" class="flex items-center space-x-3 min-w-fit">
+              <div class="flex-shrink-0">
+                <img class="h-6 w-auto" src="{% static 'common/images/hkust-logo.svg' %}" alt="HKUST">
+              </div>
+              <div class="hidden sm:block">
+                <div class="text-m font-bold text-primary-950">
+                  {% settings_value 'CENTER_NAME' %}
+                </div>
+                <div class="text-xs text-secondary-950 font-medium tracking-wider uppercase">
+                  Self-Service Portal
+                </div>
+              </div>
+            </a>
           </div>
-        </li>
-        {% if request.user.is_superuser %}
-          {% include 'common/navbar_admin.html' %}
-        {% elif request.user.is_staff %}
-          {% include 'common/navbar_nonadmin_staff.html' %}
-        {% elif perms.project.can_review_pending_project_reviews or perms.grant.can_view_all_grants %}
-          {% include 'common/navbar_director.html' %}
-        {% endif %}
-        {% if request.user.is_superuser or perms.allocation.can_manage_invoice %}
-          {% include 'common/navbar_invoice.html' %}
-        {% endif %}
-        {% if settings.CENTER_HELP_URL %}
-          {% include 'common/navbar_help.html' %}
-        {% endif %}
-      </ul>
-      <ul class="navbar-nav ml-auto">
-        {% include 'common/navbar_login.html' %}
-      </ul>
+        </div>
+        
+        <!-- Desktop Navigation Menu -->
+        <div class="hidden lg:flex lg:space-x-6">
+          <a href="/" class="relative inline-flex items-center px-4 py-2 text-sm font-medium text-primary-950 group" id="navbar-home">
+            <span class="relative z-10">Home</span>
+            <div class="absolute inset-0 bg-secondary-950 rounded-lg opacity-0 group-hover:opacity-10 transition-opacity duration-200"></div>
+            <div class="absolute bottom-0 left-0 right-0 h-0.5 bg-secondary-950 scale-x-100"></div>
+          </a>
+          
+          <a href="{% url 'center-summary' %}" class="relative inline-flex items-center px-4 py-2 text-sm font-medium text-gray-600 hover:text-primary-950 group transition-colors duration-200" id="navbar-center-summary">
+            <span class="relative z-10">Center Summary</span>
+            <div class="absolute inset-0 bg-gradient-to-r from-primary-600 to-secondary-600 rounded-lg opacity-0 group-hover:opacity-20 transition-opacity duration-200"></div>
+          </a>
+          
+          <!-- Project dropdown -->
+          <div class="relative inline-block text-left" id="navbar-project-menu">
+            <button type="button" class="dropdown-button relative inline-flex items-center px-4 py-2 text-sm font-medium text-gray-600 hover:text-primary-950 group transition-colors duration-200" aria-expanded="false">
+              <span class="relative z-10 flex items-center">
+                Project
+                <svg class="ml-2 h-4 w-4 transition-transform duration-200 group-hover:rotate-180" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                  <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
+                </svg>
+              </span>
+              <div class="absolute inset-0 bg-gradient-to-r from-primary-600 to-secondary-600 rounded-lg opacity-0 group-hover:opacity-20 transition-opacity duration-200"></div>
+            </button>
+            <div class="dropdown-menu absolute left-0 z-10 mt-2 w-64 origin-top-right rounded-xl bg-white shadow-2xl ring-1 ring-black ring-opacity-5 focus:outline-none hidden border border-gray-200" role="menu">
+              <div class="py-2" role="none">
+                <a href="{% url 'project-list' %}" class="flex items-center px-4 py-3 text-sm text-primary-950 hover:bg-blue-50 hover:text-secondary-950 transition-colors duration-200 group" id="navbar-project">
+                  <i class="fas fa-folder text-yellow-600 mr-3 group-hover:scale-110 transition-transform duration-200"></i>
+                  Projects
+                </a>
+                <a href="{% url 'allocation-list' %}" class="flex items-center px-4 py-3 text-sm text-primary-950 hover:bg-blue-50 hover:text-secondary-950 transition-colors duration-200 group" id="navbar-allocation">
+                  <i class="fas fa-server text-blue-600 mr-3 group-hover:scale-110 transition-transform duration-200"></i>
+                  Allocations
+                </a>
+                <a href="{% url 'resource-list' %}" class="flex items-center px-4 py-3 text-sm text-primary-950 hover:bg-blue-50 hover:text-secondary-950 transition-colors duration-200 group" id="navbar-resource">
+                  <i class="fas fa-microchip text-green-600 mr-3 group-hover:scale-110 transition-transform duration-200"></i>
+                  Resources
+                </a>
+                {% if settings.ALLOCATION_ACCOUNT_ENABLED  %}
+                  <a href="{% url 'allocation-account-list' %}" class="flex items-center px-4 py-3 text-sm text-primary-950 hover:bg-blue-50 hover:text-secondary-950 transition-colors duration-200 group">
+                    <i class="fas fa-user-cog text-indigo-600 mr-3 group-hover:scale-110 transition-transform duration-200"></i>
+                    Allocation Accounts
+                  </a>
+                {% endif %}
+                {% if request.user.userprofile.is_pi  %}
+                  <a href="{% url 'user-list-allocations' %}" class="flex items-center px-4 py-3 text-sm text-primary-950 hover:bg-blue-50 hover:text-secondary-950 transition-colors duration-200 group" id="navbar-user-allocation">
+                    <i class="fas fa-users text-cyan-600 mr-3 group-hover:scale-110 transition-transform duration-200"></i>
+                    User Allocations
+                  </a>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+          
+          {% if request.user.is_superuser %}
+            {% include 'common/navbar_admin.html' %}
+          {% elif request.user.is_staff %}
+            {% include 'common/navbar_nonadmin_staff.html' %}
+          {% elif perms.project.can_review_pending_project_reviews or perms.grant.can_view_all_grants %}
+            {% include 'common/navbar_director.html' %}
+          {% endif %}
+          {% if request.user.is_superuser or perms.allocation.can_manage_invoice %}
+            {% include 'common/navbar_invoice.html' %}
+          {% endif %}
+          {% if settings.CENTER_HELP_URL %}
+            {% include 'common/navbar_help.html' %}
+          {% endif %}
+        </div>
+      </div>
+      
+      <!-- Right side: User Menu and Mobile Button -->
+      <div class="flex items-center space-x-4">
+        <!-- User dropdown (desktop) -->
+        <div class="hidden lg:block relative inline-block text-left" id="navbar-user">
+          <button type="button" class="dropdown-button relative inline-flex items-center px-4 py-2 text-sm font-medium text-gray-600 hover:text-primary-950 group transition-colors duration-200" aria-expanded="false">
+            <div class="w-8 h-8 bg-gradient-to-r from-yellow-500 to-yellow-400 rounded-full flex items-center justify-center mr-3">
+              <i class="fas fa-user text-blue-900 text-sm"></i>
+            </div>
+            <span class="relative z-10 flex items-center">
+              {{user.username}}
+              <svg class="ml-2 h-4 w-4 transition-transform duration-200 group-hover:rotate-180" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
+              </svg>
+            </span>
+            <div class="absolute inset-0 bg-gradient-to-r from-primary-600 to-secondary-600 rounded-lg opacity-0 group-hover:opacity-20 transition-opacity duration-200"></div>
+          </button>
+          <div class="dropdown-menu absolute right-0 z-10 mt-2 w-64 origin-top-right rounded-xl bg-white shadow-2xl ring-1 ring-black ring-opacity-5 focus:outline-none hidden border border-gray-200" role="menu">
+            <div class="py-2" role="none">
+              <a href="{% url 'user-profile' %}" class="flex items-center px-4 py-3 text-sm text-primary-950 hover:bg-blue-50 hover:text-secondary-950 transition-colors duration-200 group" id="navbar-user-user-profile">
+                <i class="fas fa-user-circle text-yellow-600 mr-3 group-hover:scale-110 transition-transform duration-200"></i>
+                User Profile
+              </a>
+              <a href="{% url 'logout' %}" class="flex items-center px-4 py-3 text-sm text-primary-950 hover:bg-blue-50 hover:text-red-600 transition-colors duration-200 group">
+                <i class="fas fa-sign-out-alt text-red-500 mr-3 group-hover:scale-110 transition-transform duration-200"></i>
+                Log Out
+              </a>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Mobile menu button -->
+        <div class="flex items-center lg:hidden">
+          <button type="button" class="mobile-menu-button inline-flex items-center justify-center rounded-md p-2 text-gray-600 hover:bg-gray-100 hover:text-primary-950 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-secondary-950" aria-controls="mobile-menu" aria-expanded="false">
+            <span class="sr-only">Open main menu</span>
+            <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mobile menu -->
+  <div class="mobile-menu hidden lg:hidden bg-white border-t border-gray-200" id="mobile-menu">
+    <div class="px-4 pt-2 pb-4 space-y-2">
+      <!-- Mobile Brand Info -->
+      <div class="sm:hidden border-b border-primary-600 pb-4 mb-4">
+        <div class="text-m font-bold bg-gradient-to-r from-yellow-400 to-yellow-300 bg-clip-text text-transparent">
+          {% settings_value 'CENTER_NAME' %}
+        </div>
+        <div class="text-xs text-secondary-950 font-medium tracking-wider uppercase">
+          Self-Service Portal
+        </div>
+      </div>
+
+      <!-- Mobile Navigation Links -->
+      <a href="/" class="flex items-center border-l-4 border-secondary-950 bg-gray-50 py-3 pl-4 pr-4 text-base font-medium text-primary-950 rounded-r-lg">
+        <i class="fas fa-home mr-3"></i>Home
+      </a>
+      <a href="{% url 'center-summary' %}" class="flex items-center border-l-4 border-transparent py-3 pl-4 pr-4 text-base font-medium text-gray-700 hover:border-secondary-950 hover:bg-gray-50 hover:text-primary-950 transition-colors duration-200 rounded-r-lg">
+        <i class="fas fa-chart-bar mr-3"></i>Center Summary
+      </a>
+      <a href="{% url 'project-list' %}" class="flex items-center border-l-4 border-transparent py-3 pl-4 pr-4 text-base font-medium text-gray-700 hover:border-secondary-950 hover:bg-gray-50 hover:text-primary-950 transition-colors duration-200 rounded-r-lg">
+        <i class="fas fa-folder mr-3"></i>Projects
+      </a>
+      <a href="{% url 'allocation-list' %}" class="flex items-center border-l-4 border-transparent py-3 pl-4 pr-4 text-base font-medium text-gray-700 hover:border-secondary-950 hover:bg-gray-50 hover:text-primary-950 transition-colors duration-200 rounded-r-lg">
+        <i class="fas fa-server mr-3"></i>Allocations
+      </a>
+      <a href="{% url 'resource-list' %}" class="flex items-center border-l-4 border-transparent py-3 pl-4 pr-4 text-base font-medium text-gray-700 hover:border-secondary-950 hover:bg-gray-50 hover:text-primary-950 transition-colors duration-200 rounded-r-lg">
+        <i class="fas fa-microchip mr-3"></i>Resources
+      </a>
+      {% if settings.ALLOCATION_ACCOUNT_ENABLED  %}
+        <a href="{% url 'allocation-account-list' %}" class="flex items-center border-l-4 border-transparent py-3 pl-4 pr-4 text-base font-medium text-gray-700 hover:border-secondary-950 hover:bg-gray-50 hover:text-primary-950 transition-colors duration-200 rounded-r-lg">
+          <i class="fas fa-user-cog mr-3"></i>Allocation Accounts
+        </a>
+      {% endif %}
+      {% if request.user.userprofile.is_pi  %}
+        <a href="{% url 'user-list-allocations' %}" class="flex items-center border-l-4 border-transparent py-3 pl-4 pr-4 text-base font-medium text-gray-700 hover:border-secondary-950 hover:bg-gray-50 hover:text-primary-950 transition-colors duration-200 rounded-r-lg">
+          <i class="fas fa-users mr-3"></i>User Allocations
+        </a>
+      {% endif %}
+      
+      <!-- Mobile User Menu -->
+      <div class="border-t border-primary-600 pt-4 mt-4">
+        <div class="flex items-center px-4 py-2 mb-3">
+          <div class="w-10 h-10 bg-gradient-to-r from-yellow-500 to-yellow-400 rounded-full flex items-center justify-center mr-3">
+            <i class="fas fa-user text-blue-900"></i>
+          </div>
+          <div>
+            <div class="text-base font-medium text-white">{{user.username}}</div>
+            <div class="text-sm text-gray-500">User Account</div>
+          </div>
+        </div>
+        <div class="space-y-2">
+          <a href="{% url 'user-profile' %}" class="flex items-center px-4 py-2 text-base font-medium text-gray-700 hover:bg-gray-50 hover:text-primary-950 transition-colors duration-200 rounded-lg">
+            <i class="fas fa-user-circle mr-3"></i> User Profile
+          </a>
+          <a href="{% url 'logout' %}" class="flex items-center px-4 py-2 text-base font-medium text-gray-700 hover:bg-gray-50 hover:text-primary-950 transition-colors duration-200 rounded-lg">
+            <i class="fas fa-sign-out-alt mr-3"></i> Log Out
+          </a>
+        </div>
+      </div>
     </div>
   </div>
 </nav>
+
+<script>
+// Mobile menu toggle
+document.addEventListener('DOMContentLoaded', function() {
+  const mobileMenuButton = document.querySelector('.mobile-menu-button');
+  const mobileMenu = document.querySelector('.mobile-menu');
+  
+  if (mobileMenuButton && mobileMenu) {
+    mobileMenuButton.addEventListener('click', function() {
+      const isHidden = mobileMenu.classList.contains('hidden');
+      if (isHidden) {
+        mobileMenu.classList.remove('hidden');
+        this.setAttribute('aria-expanded', 'true');
+      } else {
+        mobileMenu.classList.add('hidden');
+        this.setAttribute('aria-expanded', 'false');
+      }
+    });
+  }
+  
+  // Dropdown toggle
+  const dropdownButtons = document.querySelectorAll('.dropdown-button');
+  dropdownButtons.forEach(button => {
+    button.addEventListener('click', function(e) {
+      e.preventDefault();
+      const dropdown = this.nextElementSibling;
+      const isHidden = dropdown.classList.contains('hidden');
+      
+      // Close all other dropdowns
+      document.querySelectorAll('.dropdown-menu').forEach(menu => {
+        if (menu !== dropdown) {
+          menu.classList.add('hidden');
+        }
+      });
+      
+      if (isHidden) {
+        dropdown.classList.remove('hidden');
+        this.setAttribute('aria-expanded', 'true');
+      } else {
+        dropdown.classList.add('hidden');
+        this.setAttribute('aria-expanded', 'false');
+      }
+    });
+  });
+  
+  // Close dropdowns when clicking outside
+  document.addEventListener('click', function(e) {
+    if (!e.target.closest('.dropdown-button')) {
+      document.querySelectorAll('.dropdown-menu').forEach(menu => {
+        menu.classList.add('hidden');
+      });
+      document.querySelectorAll('.dropdown-button').forEach(button => {
+        button.setAttribute('aria-expanded', 'false');
+      });
+    }
+  });
+});
+</script>
