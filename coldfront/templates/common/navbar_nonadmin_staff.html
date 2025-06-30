@@ -1,28 +1,44 @@
 {% comment %}
-  intentionally keeping "navbar-admin" (rather than renaming to navbar-staff),
+  int      {% if perms.project.view_project %}
+        <a href="{% url 'project-list' %}?show_all_projects=on" class="text-gray-700 block px-4 py-2 text-sm hover:bg-gray-50 hover:text-primary-950 transition-colors duration-200">All Projects</a>
+      {% endif %}
+      {% if perms.allocation.view_allocation %}
+        <a href="{% url 'allocation-list' %}?show_all_allocations=on" class="text-gray-700 block px-4 py-2 text-sm hover:bg-gray-50 hover:text-primary-950 transition-colors duration-200">All Allocations</a>
+      {% endif %}
+      <a href="{% url 'resource-list' %}" class="text-gray-700 block px-4 py-2 text-sm hover:bg-gray-50 hover:text-primary-950 transition-colors duration-200">All Resources</a>lly keeping "navbar-admin" (rather than renaming to navbar-staff),
   since existing templates use javascript to target it by ID
 {% endcomment %}
-<li id="navbar-admin" class="nav-item dropdown">
-  <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">Staff</a>
-  <div class="dropdown-menu">
-    {# all staff can perform a user search #}
-    <a id="navbar-user-search" class="dropdown-item" href="{% url 'user-search-home' %}">User Search</a>
-    {% if perms.project.can_view_all_projects %}
-      <a class="dropdown-item" href="{% url 'project-list' %}?show_all_projects=on">All Projects</a>
-    {% endif %}
-    {% if perms.allocation.can_view_all_allocations %}
-      <a class="dropdown-item" href="{% url 'allocation-list' %}?show_all_allocations=on">All Allocations</a>
-    {% endif %}
-    <a class="dropdown-item" href="{% url 'resource-list' %}">All Resources</a>
-    {% if perms.project.can_review_pending_project_reviews %}
-      <a id="navbar-project-reviews" class="dropdown-item" href="{% url 'project-review-list' %}">Project Reviews</a>
-    {% endif %}
-    {% if perms.allocation.can_review_allocation_requests %}
-      <a id="navbar-allocation-requests" class="dropdown-item" href="{% url 'allocation-request-list' %}">
-        Allocation Requests</a>
-    {% endif %}
-    {% if settings.GRANT_ENABLE and perms.grant.can_view_all_grants %}
-      <a id="navbar-grant-report" class="dropdown-item" href="{% url 'grant-report' %}">Grant Report</a>
-    {% endif %}
+<!-- Staff dropdown -->
+<div class="relative inline-block text-left" id="navbar-admin">
+  <button type="button" class="dropdown-button relative inline-flex items-center px-4 py-2 text-sm font-medium text-gray-600 hover:text-primary-950 group transition-colors duration-200" aria-expanded="false">
+    <span class="relative z-10 flex items-center">
+      Staff
+      <svg class="ml-2 h-4 w-4 transition-transform duration-200 group-hover:rotate-180" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+        <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
+      </svg>
+    </span>
+    <div class="absolute inset-0 bg-gradient-to-r from-primary-600 to-secondary-600 rounded-lg opacity-0 group-hover:opacity-20 transition-opacity duration-200"></div>
+  </button>
+  <div class="dropdown-menu absolute left-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none hidden" role="menu">
+    <div class="py-1" role="none">
+      {# all staff can perform a user search #}
+      <a href="{% url 'user-search-home' %}" class="text-gray-700 block px-4 py-2 text-sm hover:bg-gray-50 hover:text-primary-950 transition-colors duration-200" id="navbar-user-search">User Search</a>
+      {% if perms.project.can_view_all_projects %}
+        <a href="{% url 'project-list' %}?show_all_projects=on" class="text-gray-700 block px-4 py-2 text-sm hover:bg-gray-50 hover:text-primary-950 transition-colors duration-200">All Projects</a>
+      {% endif %}
+      {% if perms.allocation.can_view_all_allocations %}
+        <a href="{% url 'allocation-list' %}?show_all_allocations=on" class="text-gray-700 block px-4 py-2 text-sm hover:bg-gray-50 hover:text-primary-950 transition-colors duration-200">All Allocations</a>
+      {% endif %}
+      <a href="{% url 'resource-list' %}" class="text-gray-700 block px-4 py-2 text-sm hover:bg-gray-50 hover:text-primary-950 transition-colors duration-200">All Resources</a>
+      {% if perms.project.can_review_pending_project_reviews %}
+        <a href="{% url 'project-review-list' %}" class="text-gray-700 block px-4 py-2 text-sm hover:bg-gray-50 hover:text-primary-950 transition-colors duration-200" id="navbar-project-reviews">Project Reviews</a>
+      {% endif %}
+      {% if perms.allocation.can_review_allocation_requests %}
+        <a href="{% url 'allocation-request-list' %}" class="text-gray-700 block px-4 py-2 text-sm hover:bg-gray-50 hover:text-primary-950 transition-colors duration-200" id="navbar-allocation-requests">Allocation Requests</a>
+      {% endif %}
+      {% if settings.GRANT_ENABLE and perms.grant.can_view_all_grants %}
+        <a href="{% url 'grant-report' %}" class="text-gray-700 block px-4 py-2 text-sm hover:bg-gray-50 hover:text-primary-950 transition-colors duration-200" id="navbar-grant-report">Grant Report</a>
+      {% endif %}
+    </div>
   </div>
-</li>
+</div>
