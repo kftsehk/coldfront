@@ -1,5 +1,6 @@
 {% load common_tags %}
 
-<li id="navbar-help" class="nav-item">
-    <a class="nav-link" href="{{ settings.CENTER_HELP_URL }}">Help</a>
-</li>
+<a href="{{ settings.CENTER_HELP_URL }}" class="relative inline-flex items-center px-4 py-2 text-sm font-medium text-gray-600 hover:text-primary-950 group transition-colors duration-200" id="navbar-help">
+  <span class="relative z-10">Help</span>
+  <div class="absolute inset-0 bg-gradient-to-r from-primary-600 to-secondary-600 rounded-lg opacity-0 group-hover:opacity-20 transition-opacity duration-200"></div>
+</a>

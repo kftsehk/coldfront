@@ -1,29 +1,119 @@
-{% include 'common/navbar_brand.html' %}
-{% load common_tags %} 
-<nav class="navbar navbar-expand-md navbar-dark bg-primary">
-  <div class="container">
-    <a class="navbar-brand d-block d-sm-none text-primary" href="#">ColdFront</a>
+{% load common_tags %}
+{% load static %}
 
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-main">
-      <span class="navbar-toggler-icon"></span>
-    </button>
+<nav class="bg-white border-b border-gray-100">
+  <div class="mx-auto max-w-7xl px-4">
+    <div class="flex h-12 justify-between items-center">
+      <!-- Left side: Logo and Brand -->
+      <div class="flex items-center space-x-8">
+        <div class="flex items-center space-x-4">
+          <div class="flex-shrink-0">
+            <a href="/" class="flex items-center space-x-3 min-w-fit">
+              <div class="flex-shrink-0">
+                <img class="h-6 w-auto" src="{% static 'common/images/hkust-logo.svg' %}" alt="HKUST">
+              </div>
+              <div class="hidden sm:block">
+                <div class="text-m font-bold text-primary-950">
+                  {% settings_value 'CENTER_NAME' %}
+                </div>
+                <div class="text-xs text-secondary-950 font-medium tracking-wider uppercase">
+                  Self-Service Portal
+                </div>
+              </div>
+            </a>
+          </div>
+        </div>
+        
+        <!-- Desktop Navigation Menu -->
+        <div class="hidden lg:flex lg:space-x-6">
+          <a href="/" class="relative inline-flex items-center px-4 py-2 text-sm font-medium text-primary-950 group" id="navbar-home">
+            <span class="relative z-10">Home</span>
+            <div class="absolute inset-0 bg-secondary-950 rounded-lg opacity-0 group-hover:opacity-10 transition-opacity duration-200"></div>
+            <div class="absolute bottom-0 left-0 right-0 h-0.5 bg-secondary-950 scale-x-100"></div>
+          </a>
+          
+          <a href="{% url 'center-summary' %}" class="relative inline-flex items-center px-4 py-2 text-sm font-medium text-gray-600 hover:text-primary-950 group transition-colors duration-200" id="navbar-center-summary">
+            <span class="relative z-10">Center Summary</span>
+            <div class="absolute inset-0 bg-secondary-950 rounded-lg opacity-0 group-hover:opacity-10 transition-opacity duration-200"></div>
+          </a>
+          
+          {% if settings.CENTER_HELP_URL %}
+            {% include 'common/navbar_help.html' %}
+          {% endif %}
+        </div>
+      </div>
+      
+      <!-- Right side: Login Button and Mobile Button -->
+      <div class="flex items-center space-x-4">
+        <!-- Login button (desktop) -->
+        <div class="hidden lg:block">
+          <a href="{% url 'login' %}" class="relative inline-flex items-center px-6 py-2 bg-secondary-950 text-white font-medium rounded-lg hover:bg-secondary-800 transition-all duration-200 shadow-lg group" id="navbar-login">
+            <i class="fas fa-sign-in-alt mr-2 group-hover:scale-110 transition-transform duration-200" aria-hidden="true"></i>
+            Log In
+          </a>
+        </div>
+        
+        <!-- Mobile menu button -->
+        <div class="flex items-center lg:hidden">
+          <button type="button" class="mobile-menu-button inline-flex items-center justify-center rounded-md p-2 text-gray-600 hover:bg-gray-100 hover:text-primary-950 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-secondary-950" aria-controls="mobile-menu" aria-expanded="false">
+            <span class="sr-only">Open main menu</span>
+            <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
 
-    <div class="navbar-collapse collapse" id="navbar-main">
-      <ul class="navbar-nav">
-        <li id="navbar-home" class="nav-item active">
-          <a class="nav-link" href="/">Home</a>
-        </li>
-        <li id="navbar-center-summary" class="nav-item">
-          <a class="nav-link" href="{% url 'center-summary' %}">Center Summary</a>
-        </li>
-        {% if settings.CENTER_HELP_URL %}
-          {% include 'common/navbar_help.html' %}
-        {% endif %}
-      </ul>
- 
-      <ul class="navbar-nav ml-auto">
-        <li id="navbar-login" class="nav-item"><a class="nav-link" href="{% url 'login' %}"><i class="fas fa-sign-in-alt" aria-hidden="true"></i> Log In</a></li>
-      </ul>
+  <!-- Mobile menu -->
+  <div class="mobile-menu hidden lg:hidden bg-white border-t border-gray-200" id="mobile-menu">
+    <div class="px-4 pt-2 pb-4 space-y-2">
+      <!-- Mobile Brand Info -->
+      <div class="sm:hidden border-b border-gray-200 pb-4 mb-4">
+        <div class="text-m font-bold text-primary-950">
+          {% settings_value 'CENTER_NAME' %}
+        </div>
+        <div class="text-xs text-secondary-950 font-medium tracking-wider uppercase">
+          Self-Service Portal
+        </div>
+      </div>
+      
+      <!-- Mobile Navigation Links -->
+      <a href="/" class="flex items-center border-l-4 border-secondary-950 bg-gray-50 py-3 pl-4 pr-4 text-base font-medium text-primary-950 rounded-r-lg">
+        <i class="fas fa-home mr-3"></i>Home
+      </a>
+      <a href="{% url 'center-summary' %}" class="flex items-center border-l-4 border-transparent py-3 pl-4 pr-4 text-base font-medium text-gray-700 hover:border-secondary-950 hover:bg-gray-50 hover:text-primary-950 transition-colors duration-200 rounded-r-lg">
+        <i class="fas fa-chart-bar mr-3"></i>Center Summary
+      </a>
+      
+      <!-- Mobile Login Section -->
+      <div class="border-t border-gray-200 pt-4 mt-4">
+        <a href="{% url 'login' %}" class="flex items-center px-4 py-3 text-base font-medium text-white bg-secondary-950 hover:bg-secondary-800 rounded-lg transition-colors duration-200">
+          <i class="fas fa-sign-in-alt mr-3"></i>
+          Log In
+        </a>
+      </div>
     </div>
   </div>
 </nav>
+<script>
+// Mobile menu toggle
+document.addEventListener('DOMContentLoaded', function() {
+  const mobileMenuButton = document.querySelector('.mobile-menu-button');
+  const mobileMenu = document.querySelector('.mobile-menu');
+  
+  if (mobileMenuButton && mobileMenu) {
+    mobileMenuButton.addEventListener('click', function() {
+      const isHidden = mobileMenu.classList.contains('hidden');
+      if (isHidden) {
+        mobileMenu.classList.remove('hidden');
+        this.setAttribute('aria-expanded', 'true');
+      } else {
+        mobileMenu.classList.add('hidden');
+        this.setAttribute('aria-expanded', 'false');
+      }
+    });
+  }
+});
+</script>
